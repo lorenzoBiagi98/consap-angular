@@ -1,0 +1,185 @@
+<div style="opacity: 0.8;">
+  <form [formGroup]="form">
+    <div class="it-header-wrapper it-shadow mt-1">
+      <div class="it-nav-wrapper">
+        <div class="it-header-navbar-wrapper">
+          <div class="container">
+            <div class="row">
+              <div class="col-12 mt-2">
+                <div
+                  class="navbar-collapsable"
+                  id="navC2"
+                  style="
+                    border-radius: 10px;
+                    box-shadow: 0 20px 20px rgba(0, 0, 0, 0.1);
+                  "
+                >
+                  <div class="menu-wrapper">
+                    <div class="row mt-2">
+                      <div class="col-12 col-md-6 col-lg-3 mb-0">
+                        <div class="form-group">
+                          <label for="numeroTicket"></label>
+                          <input
+                            type="text"
+                            class="form-control"
+                            id="numeroTicket"
+                            placeholder="Numero Ticket"
+                            [style]="filtryStyle"
+                            formControlName="numeroTicket"
+                          />
+                          <div
+                            class="text-danger"
+                            *ngIf="
+                              form.controls['numeroTicket'].touched ||
+                              form.controls['numeroTicket'].dirty
+                            "
+                          >
+                            <span
+                              *ngIf="form.controls['numeroTicket'].errors?.['maxlength']"
+                              >Ticket troppo lungo</span
+                            >
+                            <span
+                              *ngIf="form.controls['numeroTicket'].errors?.['pattern']"
+                              >Inserisci solo numeri</span
+                            >
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-12 col-md-6 col-lg-3">
+                        <div class="form-group">
+                          <label for="altroCampo"></label>
+                          <input
+                            type="text"
+                            class="form-control"
+                            id="oggetto"
+                            placeholder="Oggetto"
+                            [style]="filtryStyle"
+                            formControlName="oggetto"
+                          />
+                        </div>
+                      </div>
+                      <div class="col-12 col-md-6 col-lg-3">
+                        <div class="form-group">
+                          <label for="opzione"></label>
+                          <select
+                            class="form-control"
+                            id="applicativo"
+                            [style]="filtryStyle"
+                            formControlName="applicativo"
+                          >
+                            <option value="">
+                              Applicativo
+                            </option>
+                            <option
+                              *ngFor="let app of applicativo"
+                              [value]="app.applicativoId"
+                            >
+                              {{ app.descApplicativo }}
+                            </option>
+                          </select>
+                        </div>
+                      </div>
+                      <div class="col-12 col-md-6 col-lg-3">
+                        <div class="form-group">
+                          <label for="opzione"></label>
+                          <select
+                            class="form-control"
+                            id="statoRichiestaConsap"
+                            [style]="filtryStyle"
+                            formControlName="statoRichiestaConsap"
+                          >
+                            <option value="" >
+                              Stato Richiesta Consap
+                            </option>
+                            <option
+                              *ngFor="let st of statoRichiestaConsap"
+                              [value]="st.statoRichiestaConsapId"
+                            >
+                              {{ st.descStatoRichiestaConsap }}
+                            </option>
+                          </select>
+                        </div>
+                      </div>
+                      <div class="col-12 col-md-6 col-lg-3">
+                        <div class="form-group">
+                          <label for="opzione"></label>
+                          <select
+                            class="form-control"
+                            id="statoRichiestaOs"
+                            [style]="filtryStyle"
+                            formControlName="statoRichiestaOs"
+                          >
+                            <option value="" >
+                              Stato Richiesta Os
+                            </option>
+                            <option
+                              *ngFor="let st of statoRichiestaOs"
+                              [value]="st.statoRichiestaOsId"
+                            >
+                              {{ st.descStatoRichiestaOs }}
+                            </option>
+                          </select>
+                        </div>
+                      </div>
+                      <div class="col-12 col-md-6 col-lg-3">
+                        <div class="form-group">
+                          <label for="opzione"></label>
+                          <select
+                            class="form-control"
+                            id="statoApprovazioneConsap"
+                            [style]="filtryStyle"
+                            formControlName="statoApprovazioneConsap"
+                          >
+                            <option value="" >
+                              Stato Approvazione Consap
+                            </option>
+                            <option
+                              *ngFor="let app of statoApprovazioneConsap"
+                              [value]="app.statoApprovazioneConsapId"
+                            >
+                              {{ app.descStatoApprovazioneConsap }}
+                            </option>
+                          </select>
+                        </div>
+                      </div>
+                      <div class="col-12 col-md-6 col-lg-3">
+                        <div class="form-group">
+                          <label for="opzione"></label>
+                          <select
+                            class="form-control"
+                            id="statoApprovazioneOs"
+                            [style]="filtryStyle"
+                            formControlName="statoApprovazioneOs"
+                          >
+                            <option value="" >
+                              Stato Approvazione Os
+                            </option>
+                            <option
+                              *ngFor="let app of statoApprovazioneOs"
+                              [value]="app.statoApprovazioneOsId"
+                            >
+                              {{ app.descStatoApprovazioneOs }}
+                            </option>
+                          </select>
+                        </div>
+                      </div>
+                      <div class="col-12 col-md-6 col-lg-3">
+                        <button class="rounded-circle" [disabled]="!form.valid">
+                          <a class="rounded-icon" aria-label="Cerca nel sito">
+                            <svg class="icon" (click)="onSubmit()">
+                              <use href="#it-search"></use>
+                            </svg>
+                          </a>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>

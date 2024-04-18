@@ -1,0 +1,6 @@
+<div>
+<app-hero *ngIf="!checkAuthentication()"></app-hero>
+<app-filtri *ngIf="checkAuthentication()" (richiesteFiltrateChange)="updateRichiesteFiltrate($event)">> ></app-filtri>
+<app-tabella-richieste-filtri *ngIf="checkAuthentication()"[richiesta]="richiesteFiltrate"></app-tabella-richieste-filtri>
+</div>
+

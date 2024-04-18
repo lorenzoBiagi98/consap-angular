@@ -1,0 +1,167 @@
+<div class="mt-4">
+  <form [formGroup]="form" style="max-width: 95%" class="mx-auto">
+    <div class="row">
+      <div class="form-group col-md-4">
+        <label for="formNome">{{ richiesta?.numeroTicket }}</label>
+        <input
+          type="text"
+          class="form-control"
+          id="numeroTicket"
+          readonly
+          formControlName="numeroTicket"
+        />
+      </div>
+      <div class="form-group col-md-4">
+        <label for="formCognome">{{ richiesta?.oggetto }}</label>
+        <input
+          type="text"
+          class="form-control"
+          id="Oggetto"
+          readonly
+          formControlName="oggetto"
+        />
+      </div>
+      <div class="form-group col-md-4">
+        <label for="formCognome">{{
+          richiesta?.commessaOs?.descCommessaOs
+        }}</label>
+        <input
+          type="text"
+          class="form-control"
+          id="Commessa"
+          readonly
+          formControlName="commessaOs"
+        />
+      </div>
+    </div>
+    <div class="row">
+      <div class="form-group col-md-3">
+        <label for="Comune">{{
+          richiesta?.applicativo?.descApplicativo
+        }}</label>
+        <input
+          type="text"
+          class="form-control"
+          id="Applicativo"
+          readonly
+          formControlName="applicativo"
+        />
+      </div>
+      <div class="form-group col-md-3">
+        <label for="Provincia">{{
+          richiesta?.statoRichiestaConsap?.descStatoRichiestaConsap
+        }}</label>
+        <input
+          type="text"
+          class="form-control"
+          id="statoRichiestaConsap"
+          readonly
+          formControlName="statoRichiestaConsap"
+        />
+      </div>
+      <div class="form-group col-md-3">
+        <label for="CAP">{{
+          richiesta?.statoRichiestaOs?.descStatoRichiestaOs
+        }}</label>
+        <input
+          type="text"
+          class="form-control"
+          id="statoRichiestaOs"
+          readonly
+          formControlName="statoRichiestaOs"
+        />
+      </div>
+      <div class="form-group col-md-3">
+        <label for="CAP">{{
+          richiesta?.statoApprovazioneConsap?.descStatoApprovazioneConsap
+        }}</label>
+        <input
+          type="text"
+          class="form-control"
+          id="statoApprovazioneConsap"
+          readonly
+          formControlName="statoApprovazioneConsap"
+        />
+      </div>
+      <div class="form-group col-md-3">
+        <label for="CAP">{{
+          richiesta?.statoApprovazioneOs?.descStatoApprovazioneOs
+        }}</label>
+        <input
+          type="text"
+          class="form-control"
+          id="statoApprovazioneOs"
+          readonly
+          formControlName="statoApprovazioneOs"
+        />
+      </div>
+      <div class="form-group col-md-3">
+        <label for="CAP">{{ richiesta?.dataCreazione }}</label>
+        <input
+          type="text"
+          class="form-control"
+          id="dataCreazione"
+          readonly
+          formControlName="dataCreazione"
+        />
+      </div>
+      <div class="form-group col-md-3">
+        <label for="CAP">{{ richiesta?.dataStimaFinale }}</label>
+        <input
+          type="text"
+          class="form-control"
+          id="stimaDataFine"
+          readonly
+          formControlName="dataStimaFinale"
+        />
+      </div>
+      <div class="form-group col-md-3">
+        <label for="CAP">{{ richiesta?.importo }}</label>
+        <input
+          type="text"
+          class="form-control"
+          id="import"
+          readonly
+          formControlName="importo"
+        />
+      </div>
+    </div>
+  </form>
+  <div
+    class="container mt-5 mb-5"
+    style="border-radius: 10px; box-shadow: 0 20px 20px rgba(0, 0, 0, 0.1)"
+  >
+    <table class="table table-striped" style="opacity: 0.9">
+      <thead>
+        <tr class="table-dark">
+          <th scope="col">Numero Ticket</th>
+          <th scope="col">Oggetto</th>
+          <th scope="col">Applicativo</th>
+          <th scope="col">Data creazione</th>
+          <th scope="col">Stima data fine</th>
+          <th scope="col">Importo</th>
+          <th scope="col">Gestisci</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let rich of richiestaStorico" class="table-info">
+          <td>{{ rich?.numeroTicket }}</td>
+          <td>{{ rich?.oggetto }}</td>
+          <td>{{ rich?.applicativo?.descApplicativo }}</td>
+          <td>{{ rich?.dataCreazione }}</td>
+          <td>{{ rich?.dataStimaFinale }}</td>
+          <td>{{ rich?.importo }}</td>
+          <td>
+            <svg
+              class="icon icon-primary"
+              style="margin-right: 1rem"
+              (click)="selezionaRichiesta(rich)"
+            >
+              <use href="#it-exchange-circle"></use>
+            </svg>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

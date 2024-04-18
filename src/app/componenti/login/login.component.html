@@ -1,0 +1,75 @@
+<form [formGroup]="userForm">
+  <div
+    class="container bg-secondary mb-5 mt-5"
+    style="border-radius: 10px; box-shadow: 0 20px 20px rgba(0, 0, 0, 0.1); width:50%"
+  >
+    <div class="card">
+      <div class="card-body">
+        <div class="col-12 col-md-6 col-lg-auto mb-3">
+          <label class="visually-hidden" for="inlineFormInput">Username</label>
+          <input
+            type="text"
+            class="form-control"
+            id="inlineFormInput"
+            placeholder="Username"
+            formControlName="username"
+          />
+          <div
+            class="text-danger"
+            *ngIf="
+              (userForm.controls['username'].invalid && isFormSubmitted || 
+                userForm.controls['username'].touched) ||
+              userForm.controls['username'].dirty
+            "
+          >
+            <span *ngIf="userForm.controls['username'].errors?.['required']">Username richiesto</span>
+            <span *ngIf="userForm.controls['username'].errors?.['minlength']">Inserisci almeno 2 caratteri</span>
+            <span *ngIf="userForm.controls['username'].errors?.['maxlength']">Inserisci meno di 20 caratteri</span>
+          </div>
+        </div>
+
+        <div class="col-12 col-md-6 col-lg-auto mb-3">
+          <label class="visually-hidden" for="inlineFormInputGroup"
+            >Password</label
+          >
+          <div class="input-group">
+            <input
+              type="{{showPassword? 'text':'password'}}"
+              class="form-control"
+              id="inlineFormInputGroup"
+              placeholder="Password"
+              formControlName="password"
+            />
+            <svg class="password-icon-visible icon icon-sm mt-2" (click)="togglePasswordVisibility()"><use href="#it-password-visible"></use></svg>
+          </div>
+          <div
+          class="text-danger"
+          *ngIf="
+            (userForm.controls['password'].invalid && isFormSubmitted || 
+              userForm.controls['password'].touched) ||
+            userForm.controls['password'].dirty
+          "
+        >
+        <span *ngIf="userForm.controls['password'].errors?.['required']">Password richiesta</span>
+        </div>
+        </div>
+        <div class="col-6 col-md-3 offset-md-6 offset-lg-0 col-lg-auto">
+          <div class="form-check m-0">
+            <input
+              class="form-check-input"
+              type="checkbox"
+              id="autoSizingCheck"
+              formControlName="ricordami"
+            />
+            <label class="form-check-label" for="autoSizingCheck">
+              Ricordami
+            </label>
+          </div>
+        </div>
+        <div class="col-6 col-md-3 col-lg-auto d-flex justify-content-end">
+          <button type="button" class="btn btn-primary" (click)="onSubmit()" [disabled]="!userForm.valid">Invia</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>

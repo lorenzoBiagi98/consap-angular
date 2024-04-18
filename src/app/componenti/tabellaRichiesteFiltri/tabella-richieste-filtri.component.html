@@ -1,0 +1,36 @@
+<div
+  class="container mt-5 mb-5"
+  style="border-radius: 10px; box-shadow: 0 20px 20px rgba(0, 0, 0, 0.1);"
+>
+  <table class="table table-striped" style="opacity: 0.9;">
+    <thead>
+      <tr class="table-dark">
+        <th scope="col">Numero Ticket</th>
+        <th scope="col">Oggetto</th>
+        <th scope="col">Applicativo</th>
+        <th scope="col">Data creazione</th>
+        <th scope="col">Stima data fine</th>
+        <th scope="col">Importo</th>
+        <th scope="col">Gestisci</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let rich of richiesta" class="table-info">
+        <td>{{ rich.numeroTicket }}</td>
+        <td>{{ rich.oggetto }}</td>
+        <td>{{ rich.applicativo.descApplicativo }}</td>
+        <td>{{ rich.dataCreazione }}</td>
+        <td>{{ rich.dataStimaFinale }}</td>
+        <td>{{ rich.importo }}</td>
+        <td>
+            <svg class="icon icon-primary" style="margin-right: 1rem;" routerLink="visualizza" (click)="goToVisualizza(rich)">
+              <use href="#it-zoom-in"></use>
+            </svg>
+            <svg class="icon icon-primary">
+              <use href="#it-pencil"></use>
+            </svg>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
