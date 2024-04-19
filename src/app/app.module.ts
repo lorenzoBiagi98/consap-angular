@@ -12,9 +12,9 @@ import { HttpClientModule } from '@angular/common/http';
 import { NavbarComponent } from './componenti/navbar/navbar.component';
 import { HeroComponent } from './componenti/hero/hero.component';
 import { FiltriComponent } from './componenti/filtri/filtri.component';
-import { TabellaRichiesteFiltriComponent } from './componenti/tabellaRichiesteFiltri/tabella-richieste-filtri.component';
-import { TabellaRichiesteComponent } from './componenti/tabellaRichiesteInserimento/tabella-richieste.component';
-import { TabellaRichiesteVisualizzaComponent } from './componenti/tabellaRichiesteVisualizza/tabella-richieste-visualizza.component';
+import { TabellaRichiesteFiltriComponent } from './componenti/richieste/tabellaRichiesteFiltri/tabella-richieste-filtri.component';
+import { InserimentoComponent } from './componenti/richieste/inserimento/inserimento.component';
+import { VisualizzaComponent } from './componenti/richieste/visualizza/visualizza.component';
 
 @NgModule({
   declarations: [
@@ -26,8 +26,8 @@ import { TabellaRichiesteVisualizzaComponent } from './componenti/tabellaRichies
     NavbarComponent,
     HeroComponent,
     TabellaRichiesteFiltriComponent,
-    TabellaRichiesteComponent,
-    TabellaRichiesteVisualizzaComponent
+    InserimentoComponent,
+    VisualizzaComponent
   ],
   imports: [
     BrowserModule,

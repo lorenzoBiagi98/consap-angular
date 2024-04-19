@@ -62,7 +62,7 @@ export class FiltriComponent implements OnInit {
   }
   onSubmit(){
 
-    const filtro= {
+    const filtro= [{
       id:null,
       numeroTicket:this.form.value.numeroTicket || null,
       applicativo: this.form.value.applicativo || null,
@@ -75,12 +75,10 @@ export class FiltriComponent implements OnInit {
       dataStimaFinale:null,
       importo:null,
       commessaOs:null
-    }
+    }]
 
     this.instance.setFiltri(filtro);
-    
-    console.log('filtro in filtri', filtro)
-    
+    console.log('sono qui, filtri component')
     this.instance.RichiestaGet(filtro).subscribe(
       (response: any) => {
         console.log('Risposta dal backend:', response);

@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { Richiesta } from '../../../dto/Richiesta';
-import { ChiamateService } from '../../connessioni/chiamate.service';
+import { Richiesta } from '../../../../dto/Richiesta';
+import { ChiamateService } from '../../../connessioni/chiamate.service';
 import { Router } from '@angular/router';
 
 @Component({
@@ -17,8 +17,8 @@ export class TabellaRichiesteFiltriComponent implements OnInit{
   constructor(private instance: ChiamateService, private router:Router){}
 
   goToVisualizza(richiesta: Richiesta) {
-    console.log(JSON.stringify(richiesta) + "invio")
     this.router.navigate(['visualizza'], { state: { richiesta } });
   }
+  
 
 }

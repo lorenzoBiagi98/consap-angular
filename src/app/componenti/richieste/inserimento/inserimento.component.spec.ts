@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { TabellaRichiesteComponent } from './tabella-richieste.component';
+import { TabellaRichiesteComponent } from './inserimento.component';
 
 describe('TabellaRichiesteComponent', () => {
   let component: TabellaRichiesteComponent;

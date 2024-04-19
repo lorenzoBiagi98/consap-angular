@@ -1,15 +1,15 @@
 import { Component, OnInit } from '@angular/core';
-import { Richiesta } from '../../../dto/Richiesta';
+import { Richiesta } from '../../../../dto/Richiesta';
 import { ActivatedRoute } from '@angular/router';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { ChiamateService } from '../../connessioni/chiamate.service';
+import { ChiamateService } from '../../../connessioni/chiamate.service';
 
 @Component({
-  selector: 'app-tabella-richieste-visualizza',
-  templateUrl: './tabella-richieste-visualizza.component.html',
-  styleUrl: './tabella-richieste-visualizza.component.css',
+  selector: 'app-visualizza',
+  templateUrl: 'visualizza.component.html',
+  styleUrl: 'visualizza.component.css',
 })
-export class TabellaRichiesteVisualizzaComponent implements OnInit {
+export class VisualizzaComponent implements OnInit {
   richiesta: Richiesta = null;
   richiestaStorico : Richiesta []= [];
   form: FormGroup = null;

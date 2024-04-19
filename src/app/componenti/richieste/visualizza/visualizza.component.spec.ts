@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { TabellaRichiesteVisualizzaComponent } from './tabella-richieste-visualizza.component';
+import { TabellaRichiesteVisualizzaComponent } from './visualizza.component';
 
 describe('TabellaRichiesteVisualizzaComponent', () => {
   let component: TabellaRichiesteVisualizzaComponent;

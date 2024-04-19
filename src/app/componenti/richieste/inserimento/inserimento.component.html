@@ -1,0 +1,213 @@
+<div class="container bg-primary mt-5 mb-5">
+  <div class="mt-4">
+    <form [formGroup]="form" style="max-width: 95%" class="mx-auto">
+      <div class="row">
+        <div class="form-group col-md-4 mt-5">
+          <label for="numeroTicket"></label>
+          <input
+            type="text"
+            class="form-control"
+            id="numeroTicket"
+            placeholder="Numero Ticket"
+            formControlName="numeroTicket"
+          />
+          <div
+            class="text-danger"
+            *ngIf="
+              form.controls['numeroTicket'].touched ||
+              form.controls['numeroTicket'].dirty
+            "
+          >
+            <span *ngIf="form.controls['numeroTicket'].errors?.['maxlength']"
+              >Ticket troppo lungo</span
+            >
+            <span *ngIf="form.controls['numeroTicket'].errors?.['minlength']"
+              >Ticket troppo corto</span
+            >
+            <span *ngIf="form.controls['numeroTicket'].errors?.['pattern']"
+              >Inserisci solo numeri</span
+            >
+            <span *ngIf="form.controls['numeroTicket'].errors?.['required']"
+              >Numero ticket obbligatorio</span
+            >
+          </div>
+        </div>
+        <div class="form-group col-md-4 mt-5">
+          <label for="oggetto"></label>
+          <input
+            type="text"
+            class="form-control"
+            id="Oggetto"
+            placeholder="Oggetto"
+            formControlName="oggetto"
+          />
+          <div
+            class="text-danger"
+            *ngIf="
+              form.controls['numeroTicket'].touched ||
+              form.controls['numeroTicket'].dirty
+            "
+          >
+            <span *ngIf="form.controls['numeroTicket'].errors?.['required']"
+              >Oggetto obbligatorio</span
+            >
+          </div>
+        </div>
+        <div class="form-group col-md-4 mt-5">
+          <label for="opzione"></label>
+          <select
+            class="form-control"
+            id="commessaOs"
+            formControlName="commessaOs"
+          >
+            <option value="">CommessaOs</option>
+            <option *ngFor="let comm of commessaOs" [value]="comm.commessaOsId">
+              {{ comm.descCommessaOs}}
+            </option>
+          </select>
+        </div>
+      </div>
+      <div class="row">
+        <div class="form-group col-md-3">
+          <label for="opzione"></label>
+          <select
+            class="form-control"
+            id="applicativo"
+            formControlName="applicativo"
+          >
+            <option value="">Applicativo</option>
+            <option *ngFor="let app of applicativo" [value]="app.applicativoId">
+              {{ app.descApplicativo }}
+            </option>
+          </select>
+          <div
+            class="text-danger"
+            *ngIf="
+              form.controls['numeroTicket'].touched ||
+              form.controls['numeroTicket'].dirty
+            "
+          >
+            <span *ngIf="form.controls['numeroTicket'].errors?.['required']"
+              >Applicativo obbligatorio</span
+            >
+          </div>
+        </div>
+        <div class="form-group col-md-3">
+          <label for="opzione"></label>
+          <select
+            class="form-control"
+            id="statoRichiestaConsap"
+            formControlName="statoRichiestaConsap"
+          >
+            <option value="">Stato Richiesta Consap</option>
+            <option
+              *ngFor="let st of statoRichiestaConsap"
+              [value]="st.statoRichiestaConsapId"
+            >
+              {{ st.descStatoRichiestaConsap }}
+            </option>
+          </select>
+        </div>
+        <div class="form-group col-md-3">
+          <label for="opzione"></label>
+          <select
+            class="form-control"
+            id="statoRichiestaOs"
+            formControlName="statoRichiestaOs"
+          >
+            <option value="">Stato Richiesta Os</option>
+            <option
+              *ngFor="let st of statoRichiestaOs"
+              [value]="st.statoRichiestaOsId"
+            >
+              {{ st.descStatoRichiestaOs }}
+            </option>
+          </select>
+        </div>
+        <div class="form-group col-md-3">
+          <label for="opzione"></label>
+          <select
+            class="form-control col-md-3"
+            id="statoApprovazioneConsap"
+            formControlName="statoApprovazioneConsap"
+          >
+            <option value="">Stato Approvazione Consap</option>
+            <option
+              *ngFor="let app of statoApprovazioneConsap"
+              [value]="app.statoApprovazioneConsapId"
+            >
+              {{ app.descStatoApprovazioneConsap }}
+            </option>
+          </select>
+        </div>
+        <div class="form-group col-md-3">
+          <label for="opzione"></label>
+          <select
+            class="form-control"
+            id="statoApprovazioneOs"
+            formControlName="statoApprovazioneOs"
+          >
+            <option value="">Stato Approvazione Os</option>
+            <option
+              *ngFor="let app of statoApprovazioneOs"
+              [value]="app.statoApprovazioneOsId"
+            >
+              {{ app.descStatoApprovazioneOs }}
+            </option>
+          </select>
+        </div>
+        <div class="form-group col-md-3">
+          <label class="active"for="dateStandard"></label>
+          <input
+            type="date"
+            class="form-control"
+            id="dataCreazione"
+            placeholder="Data creazione"
+            formControlName="dataCreazione"
+          />
+          <div
+            class="text-danger"
+            *ngIf="
+              form.controls['numeroTicket'].touched ||
+              form.controls['numeroTicket'].dirty
+            "
+          >
+            <span *ngIf="form.controls['numeroTicket'].errors?.['required']"
+              >Data di creazione obbligatoria</span
+            >
+          </div>
+        </div>
+        <div class="form-group col-md-3">
+          <label class="active" for="dateStandard"></label>
+          <input
+            type="date"
+            class="form-control"
+            id="stimaDataFine"
+            placeholder="Stima data fine"
+            formControlName="dataStimaFinale"
+          />
+        </div>
+        <div class="form-group col-md-3">
+          <label for="CAP"></label>
+          <input
+            type="text"
+            class="form-control"
+            id="import"
+            placeholder="importo"
+            formControlName="importo"
+          />
+        </div>
+      </div>
+      <div class="btn-example">
+        <button
+          type="button"
+          class="btn btn-secondary mb-3"
+          [disabled]="!form.valid"
+          (click) = "onSubmit()"
+        >
+          Inserisci
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

@@ -4,10 +4,9 @@ import { RouterModule, Routes } from '@angular/router';
 import { HomeComponent } from './componenti/home/home.component';
 import { authGuard } from './auth/auth.guard';
 import { FiltriComponent } from './componenti/filtri/filtri.component';
-
-import { TabellaRichiesteFiltriComponent } from './componenti/tabellaRichiesteFiltri/tabella-richieste-filtri.component';
-import { TabellaRichiesteComponent } from './componenti/tabellaRichiesteInserimento/tabella-richieste.component';
-import { TabellaRichiesteVisualizzaComponent } from './componenti/tabellaRichiesteVisualizza/tabella-richieste-visualizza.component';
+import { TabellaRichiesteFiltriComponent } from './componenti/richieste/tabellaRichiesteFiltri/tabella-richieste-filtri.component';
+import { InserimentoComponent } from './componenti/richieste/inserimento/inserimento.component';
+import { VisualizzaComponent } from './componenti/richieste/visualizza/visualizza.component';
 
 const routes: Routes = [
   {
@@ -16,8 +15,12 @@ const routes: Routes = [
   },
   {
     path:'visualizza',
-    component: TabellaRichiesteVisualizzaComponent,
+    component: VisualizzaComponent,
     canActivate: [authGuard]
+  },
+  {
+    path:'inserimento',
+    component: InserimentoComponent
   },
   {
     path: 'home',

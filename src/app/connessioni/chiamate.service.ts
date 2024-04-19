@@ -1,7 +1,7 @@
 import { HttpClient, HttpHandler, HttpHeaders } from '@angular/common/http';
 import { Injectable, OnInit } from '@angular/core';
-import * as CryptoJS from 'crypto-js';
 import { TokenService } from '../token/token.service';
+import { catchError, throwError } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -51,9 +51,46 @@ export class ChiamateService {
   requestBodyStorico: any = {
     erroreDTO: null,
     filtri: {
-      id: 2,
+      id: null,
     },
     elenco: null,
+  };
+    /*
+   *###################################################################################################
+   BODY INSERIMENTO RICHIESTA
+   *###################################################################################################
+   */
+  requestBodyInserimento: any = {
+    erroreDTO: null,
+    filtri: null,
+    elenco: [
+      {
+        id: null,
+        numeroTicket: null,
+        applicativo: {
+          applicativoId: null,
+        },
+        oggetto: null,
+        statoRichiestaConsap: {
+          statoRichiestaConsapId: null,
+        },
+        dataCreazione: null,
+        statoApprovazioneConsap: {
+          statoApprovazioneConsapId: null,
+        },
+        statoApprovazioneOs: {
+          statoApprovazioneOsId: null,
+        },
+        statoRichiestaOs: {
+          statoRichiestaOsId: null,
+        },
+        dataStimaFinale: null,
+        importo: null,
+        commessaOs: {
+          commessaOsId: null,
+        },
+      },
+    ],
   };
   /*
    *###################################################################################################
@@ -69,8 +106,10 @@ export class ChiamateService {
   private urlStatoApprovazioneConsap =
     'http://localhost:8080/approvazioneConsap';
   private urlStatoApprovazioneOs = 'http://localhost:8080/statoApprovazioneOs';
+  private urlCommessaOs = 'http://localhost:8080/commessaOs'
   private urlRichiesta = 'http://localhost:8080/richiesta/1-5';
   private urlRichiestaStorico = 'http://localhost:8080/richiesta/storico/1-5';
+  private urlRichiestaInserimento = 'http://localhost:8080/richiesta/new';
 
   constructor(private http: HttpClient, private token: TokenService) {}
 
@@ -82,9 +121,13 @@ export class ChiamateService {
     this.requestBodyStorico.filtri = filtri;
   }
 
-  getRequestBodyRichiesta() {
-    return this.requestBodyRichiesta;
+  setFiltriInserimento(filtri: any){
+    this.requestBodyInserimento.elenco.push(filtri);
   }
+
+  // getRequestBodyRichiesta() {
+  //   return this.requestBodyRichiesta;
+  // }
 
   loginRequest(data: any) {
     return this.http.post<any>(this.urlLogin, data, { observe: 'response' });
@@ -156,6 +199,7 @@ export class ChiamateService {
    *###################################################################################################
    */
   statoApprovazioneConsapGet() {
+    
     const encryptedToken = sessionStorage.getItem('encrypted_Token');
     const token = this.token.decryptToken(encryptedToken);
     const headers = new HttpHeaders({
@@ -186,12 +230,62 @@ export class ChiamateService {
       observe: 'response',
     });
   }
+    /*
+   *###################################################################################################
+   LETTURA COMMESSE OS
+   *###################################################################################################
+   */
+   commssaOsGet() {
+    const encryptedToken = sessionStorage.getItem('encrypted_Token');
+    const token = this.token.decryptToken(encryptedToken);
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`,
+    });
+    return this.http.post<any>(this.urlCommessaOs, this.requestBody, {
+      headers,
+      observe: 'response',
+    });
+  }
   /*
    *###################################################################################################
    LETTURA RICHIESTE
    *###################################################################################################
    */
-  RichiestaGet(filtro: any) {
+   RichiestaGet(filtro: any) {
+    const encryptedToken = sessionStorage.getItem('encrypted_Token');
+    const token = this.token.decryptToken(encryptedToken);
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/json',
+    });
+  
+    try {
+      return this.http.post<any>(
+        this.urlRichiesta,
+        { filtri: filtro },
+        {
+          headers,
+          observe: 'response',
+        }
+      ).pipe(
+        catchError(error => {
+          // Gestisci l'errore qui
+          console.error('Si è verificato un errore:', error);
+          return throwError(error); // Propaga l'errore al chiamante
+        })
+      );
+    } catch (error) {
+      console.error('Si è verificato un errore durante la richiesta:', error);
+      return throwError(error); // Propaga l'errore al chiamante
+    }
+  }
+  
+  /*
+   *###################################################################################################
+   LETTURA STORICO RICHIESTE
+   *###################################################################################################
+   */
+  RichiestaStoricoGet(filtro: any) {
     const encryptedToken = sessionStorage.getItem('encrypted_Token');
     const token = this.token.decryptToken(encryptedToken);
     const headers = new HttpHeaders({
@@ -199,7 +293,7 @@ export class ChiamateService {
       'Content-Type': 'application/json',
     });
     return this.http.post<any>(
-      this.urlRichiesta,
+      this.urlRichiestaStorico,
       { filtri: filtro },
       {
         headers,
@@ -207,20 +301,21 @@ export class ChiamateService {
       }
     );
   }
-  /*
+    /*
    *###################################################################################################
-   LETTURA STORICO RICHIESTE
+   INSERIMENTO RICHIESTA
    *###################################################################################################
    */
-  RichiestaStoricoGet(filtro:any) {
+  RichiestaInserimento(filtro:any){
+    console.log('filtro',filtro)
     const encryptedToken = sessionStorage.getItem('encrypted_Token');
     const token = this.token.decryptToken(encryptedToken);
     const headers = new HttpHeaders({
       Authorization: `Bearer ${token}`,
     });
     return this.http.post<any>(
-      this.urlRichiestaStorico,
-      {filtri:filtro},
+      this.urlRichiestaInserimento,
+      { filtri: filtro },
       {
         headers,
         observe: 'response',
