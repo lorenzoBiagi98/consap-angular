@@ -55,7 +55,7 @@ export class ChiamateService {
     },
     elenco: null,
   };
-    /*
+  /*
    *###################################################################################################
    BODY INSERIMENTO RICHIESTA
    *###################################################################################################
@@ -63,34 +63,7 @@ export class ChiamateService {
   requestBodyInserimento: any = {
     erroreDTO: null,
     filtri: null,
-    elenco: [
-      {
-        id: null,
-        numeroTicket: null,
-        applicativo: {
-          applicativoId: null,
-        },
-        oggetto: null,
-        statoRichiestaConsap: {
-          statoRichiestaConsapId: null,
-        },
-        dataCreazione: null,
-        statoApprovazioneConsap: {
-          statoApprovazioneConsapId: null,
-        },
-        statoApprovazioneOs: {
-          statoApprovazioneOsId: null,
-        },
-        statoRichiestaOs: {
-          statoRichiestaOsId: null,
-        },
-        dataStimaFinale: null,
-        importo: null,
-        commessaOs: {
-          commessaOsId: null,
-        },
-      },
-    ],
+    elenco: [],
   };
   /*
    *###################################################################################################
@@ -106,10 +79,11 @@ export class ChiamateService {
   private urlStatoApprovazioneConsap =
     'http://localhost:8080/approvazioneConsap';
   private urlStatoApprovazioneOs = 'http://localhost:8080/statoApprovazioneOs';
-  private urlCommessaOs = 'http://localhost:8080/commessaOs'
-  private urlRichiesta = 'http://localhost:8080/richiesta/1-5';
+  private urlCommessaOs = 'http://localhost:8080/commessaOs';
+  //private urlRichiesta = 'http://localhost:8080/richiesta/1-5';
   private urlRichiestaStorico = 'http://localhost:8080/richiesta/storico/1-5';
   private urlRichiestaInserimento = 'http://localhost:8080/richiesta/new';
+  private urlRichiestaModifica = 'http://localhost:8080/richiesta/edit';
 
   constructor(private http: HttpClient, private token: TokenService) {}
 
@@ -121,13 +95,17 @@ export class ChiamateService {
     this.requestBodyStorico.filtri = filtri;
   }
 
-  setFiltriInserimento(filtri: any){
+  setFiltriInserimento(filtri: any) {
     this.requestBodyInserimento.elenco.push(filtri);
   }
 
-  // getRequestBodyRichiesta() {
-  //   return this.requestBodyRichiesta;
-  // }
+  getFiltriInserimento() {
+    return this.requestBodyInserimento;
+  }
+
+  getRequestBodyRichiesta() {
+    return this.requestBodyRichiesta;
+  }
 
   loginRequest(data: any) {
     return this.http.post<any>(this.urlLogin, data, { observe: 'response' });
@@ -151,8 +129,11 @@ export class ChiamateService {
    *###################################################################################################
    */
   applicativoGet() {
-    const encryptedToken = sessionStorage.getItem('encrypted_Token');
-    const token = this.token.decryptToken(encryptedToken);
+    let token = '';
+    if (typeof sessionStorage !== 'undefined') {
+      const encryptedToken = sessionStorage.getItem('encrypted_Token');
+      token = this.token.decryptToken(encryptedToken);
+    }
     const headers = new HttpHeaders({
       Authorization: `Bearer ${token}`,
     });
@@ -167,8 +148,11 @@ export class ChiamateService {
    *###################################################################################################
    */
   statoRichiestaConsapGet() {
-    const encryptedToken = sessionStorage.getItem('encrypted_Token');
-    const token = this.token.decryptToken(encryptedToken);
+    let token = '';
+    if (typeof sessionStorage !== 'undefined') {
+      const encryptedToken = sessionStorage.getItem('encrypted_Token');
+      token = this.token.decryptToken(encryptedToken);
+    }
     const headers = new HttpHeaders({
       Authorization: `Bearer ${token}`,
     });
@@ -183,8 +167,11 @@ export class ChiamateService {
    *###################################################################################################
    */
   statoRichiestaOsGet() {
-    const encryptedToken = sessionStorage.getItem('encrypted_Token');
-    const token = this.token.decryptToken(encryptedToken);
+    let token = '';
+    if (typeof sessionStorage !== 'undefined') {
+      const encryptedToken = sessionStorage.getItem('encrypted_Token');
+      token = this.token.decryptToken(encryptedToken);
+    }
     const headers = new HttpHeaders({
       Authorization: `Bearer ${token}`,
     });
@@ -199,9 +186,11 @@ export class ChiamateService {
    *###################################################################################################
    */
   statoApprovazioneConsapGet() {
-    
-    const encryptedToken = sessionStorage.getItem('encrypted_Token');
-    const token = this.token.decryptToken(encryptedToken);
+    let token = '';
+    if (typeof sessionStorage !== 'undefined') {
+      const encryptedToken = sessionStorage.getItem('encrypted_Token');
+      token = this.token.decryptToken(encryptedToken);
+    }
     const headers = new HttpHeaders({
       Authorization: `Bearer ${token}`,
     });
@@ -220,8 +209,11 @@ export class ChiamateService {
    *###################################################################################################
    */
   statoApprovazioneOsGet() {
-    const encryptedToken = sessionStorage.getItem('encrypted_Token');
-    const token = this.token.decryptToken(encryptedToken);
+    let token = '';
+    if (typeof sessionStorage !== 'undefined') {
+      const encryptedToken = sessionStorage.getItem('encrypted_Token');
+      token = this.token.decryptToken(encryptedToken);
+    }
     const headers = new HttpHeaders({
       Authorization: `Bearer ${token}`,
     });
@@ -230,14 +222,17 @@ export class ChiamateService {
       observe: 'response',
     });
   }
-    /*
+  /*
    *###################################################################################################
    LETTURA COMMESSE OS
    *###################################################################################################
    */
-   commssaOsGet() {
-    const encryptedToken = sessionStorage.getItem('encrypted_Token');
-    const token = this.token.decryptToken(encryptedToken);
+  commssaOsGet() {
+    let token = '';
+    if (typeof sessionStorage !== 'undefined') {
+      const encryptedToken = sessionStorage.getItem('encrypted_Token');
+      token = this.token.decryptToken(encryptedToken);
+    }
     const headers = new HttpHeaders({
       Authorization: `Bearer ${token}`,
     });
@@ -251,43 +246,50 @@ export class ChiamateService {
    LETTURA RICHIESTE
    *###################################################################################################
    */
-   RichiestaGet(filtro: any) {
-    const encryptedToken = sessionStorage.getItem('encrypted_Token');
-    const token = this.token.decryptToken(encryptedToken);
+  RichiestaGet(filtro: any, pageNumber:number, pageSize:number) {
+    let token = '';
+    if (typeof sessionStorage !== 'undefined') {
+      const encryptedToken = sessionStorage.getItem('encrypted_Token');
+      token = this.token.decryptToken(encryptedToken);
+    }
     const headers = new HttpHeaders({
       Authorization: `Bearer ${token}`,
       'Content-Type': 'application/json',
     });
-  
+    const urlRichiesta = `http://localhost:8080/richiesta/${pageNumber}-${pageSize}`;
     try {
-      return this.http.post<any>(
-        this.urlRichiesta,
-        { filtri: filtro },
-        {
-          headers,
-          observe: 'response',
-        }
-      ).pipe(
-        catchError(error => {
-          // Gestisci l'errore qui
-          console.error('Si è verificato un errore:', error);
-          return throwError(error); // Propaga l'errore al chiamante
-        })
-      );
+      return this.http
+        .post<any>(
+          urlRichiesta,
+          { filtri: filtro },
+          {
+            headers,
+            observe: 'response',
+          }
+        )
+        .pipe(
+          catchError((error) => {
+            // Gestisci l'errore qui
+            console.error('Si è verificato un errore:', error);
+            return throwError(error); // Propaga l'errore al chiamante
+          })
+        );
     } catch (error) {
       console.error('Si è verificato un errore durante la richiesta:', error);
       return throwError(error); // Propaga l'errore al chiamante
     }
   }
-  
   /*
    *###################################################################################################
    LETTURA STORICO RICHIESTE
    *###################################################################################################
    */
   RichiestaStoricoGet(filtro: any) {
-    const encryptedToken = sessionStorage.getItem('encrypted_Token');
-    const token = this.token.decryptToken(encryptedToken);
+    let token = '';
+    if (typeof sessionStorage !== 'undefined') {
+      const encryptedToken = sessionStorage.getItem('encrypted_Token');
+      token = this.token.decryptToken(encryptedToken);
+    }
     const headers = new HttpHeaders({
       Authorization: `Bearer ${token}`,
       'Content-Type': 'application/json',
@@ -301,25 +303,52 @@ export class ChiamateService {
       }
     );
   }
-    /*
+  /*
    *###################################################################################################
    INSERIMENTO RICHIESTA
    *###################################################################################################
    */
-  RichiestaInserimento(filtro:any){
-    console.log('filtro',filtro)
-    const encryptedToken = sessionStorage.getItem('encrypted_Token');
-    const token = this.token.decryptToken(encryptedToken);
-    const headers = new HttpHeaders({
-      Authorization: `Bearer ${token}`,
-    });
-    return this.http.post<any>(
-      this.urlRichiestaInserimento,
-      { filtri: filtro },
-      {
+  RichiestaInserimento(filtro: any) {
+    let token = '';
+    if (typeof sessionStorage !== 'undefined') {
+      const encryptedToken = sessionStorage.getItem('encrypted_Token');
+      token = this.token.decryptToken(encryptedToken);
+    }
+    try {
+      const headers = new HttpHeaders({
+        Authorization: `Bearer ${token}`,
+      });
+      return this.http.post<any>(this.urlRichiestaInserimento, filtro, {
         headers,
         observe: 'response',
-      }
-    );
+      });
+    } catch (error) {
+      console.error('Si è verificato un errore durante la richiesta:', error);
+      return throwError(error); // Propaga l'errore al chiamante
+    }
+  }
+    /*
+   *###################################################################################################
+   MODIFICA RICHIESTA
+   *###################################################################################################
+   */
+   RichiestaModifica(filtro: any) {
+    let token = '';
+    if (typeof sessionStorage !== 'undefined') {
+      const encryptedToken = sessionStorage.getItem('encrypted_Token');
+      token = this.token.decryptToken(encryptedToken);
+    }
+    try {
+      const headers = new HttpHeaders({
+        Authorization: `Bearer ${token}`,
+      });
+      return this.http.post<any>(this.urlRichiestaModifica, filtro, {
+        headers,
+        observe: 'response',
+      });
+    } catch (error) {
+      console.error('Si è verificato un errore durante la richiesta:', error);
+      return throwError(error); // Propaga l'errore al chiamante
+    }
   }
 }

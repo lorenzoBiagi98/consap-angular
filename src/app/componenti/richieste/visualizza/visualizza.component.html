@@ -113,32 +113,38 @@
           formControlName="importo"
         />
       </div>
+      <div class="form-group col-md-3">
+        <label for="CAP">{{ richiesta?.applicativo?.descApplicativo }}</label>
+        <input
+          type="text"
+          class="form-control"
+          id="applicativo"
+          readonly
+          formControlName="importo"
+        />
+      </div>    
+      <div class="btn-example">
+        <svg class="icon icon-danger" (click)="goBack()"><use href="#it-arrow-left-circle" [style]="{color:'red'}"></use></svg>
+      </div>  
     </div>
+
   </form>
+
   <div
     class="container mt-5 mb-5"
     style="border-radius: 10px; box-shadow: 0 20px 20px rgba(0, 0, 0, 0.1)"
   >
     <table class="table table-striped" style="opacity: 0.9">
+      <caption>Tabella usata per ottenere lo storico delle richieste</caption>
       <thead>
         <tr class="table-dark">
-          <th scope="col">Numero Ticket</th>
-          <th scope="col">Oggetto</th>
-          <th scope="col">Applicativo</th>
-          <th scope="col">Data creazione</th>
-          <th scope="col">Stima data fine</th>
-          <th scope="col">Importo</th>
+          <th scope="col">Data inserimento</th>
           <th scope="col">Gestisci</th>
         </tr>
       </thead>
       <tbody>
         <tr *ngFor="let rich of richiestaStorico" class="table-info">
-          <td>{{ rich?.numeroTicket }}</td>
-          <td>{{ rich?.oggetto }}</td>
-          <td>{{ rich?.applicativo?.descApplicativo }}</td>
-          <td>{{ rich?.dataCreazione }}</td>
-          <td>{{ rich?.dataStimaFinale }}</td>
-          <td>{{ rich?.importo }}</td>
+          <td>{{ formatData(rich?.dataInserimento) }}</td>
           <td>
             <svg
               class="icon icon-primary"

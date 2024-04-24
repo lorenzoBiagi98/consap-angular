@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Richiesta } from '../../../../dto/Richiesta';
 import { ActivatedRoute } from '@angular/router';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormControl, FormGroup} from '@angular/forms';
 import { ChiamateService } from '../../../connessioni/chiamate.service';
 
 @Component({
@@ -55,5 +55,15 @@ export class VisualizzaComponent implements OnInit {
   
   selezionaRichiesta(richiesta: Richiesta) {
     this.richiesta = richiesta;
+  }
+
+  goBack():void{
+    history.back();
+  }
+
+  formatData(data:Date):string{
+   const formattedDate = data.toString();
+   const newFormattedDate = formattedDate.slice(0,-7);
+    return newFormattedDate.replace('T','  ');
   }
 }

@@ -1,4 +1,4 @@
-<div style="opacity: 0.8;">
+<div style="opacity: 0.8">
   <form [formGroup]="form">
     <div class="it-header-wrapper it-shadow mt-1">
       <div class="it-nav-wrapper">
@@ -18,7 +18,6 @@
                     <div class="row mt-2">
                       <div class="col-12 col-md-6 col-lg-3 mb-0">
                         <div class="form-group">
-                          <label for="numeroTicket"></label>
                           <input
                             type="text"
                             class="form-control"
@@ -47,7 +46,6 @@
                       </div>
                       <div class="col-12 col-md-6 col-lg-3">
                         <div class="form-group">
-                          <label for="altroCampo"></label>
                           <input
                             type="text"
                             class="form-control"
@@ -60,16 +58,13 @@
                       </div>
                       <div class="col-12 col-md-6 col-lg-3">
                         <div class="form-group">
-                          <label for="opzione"></label>
                           <select
                             class="form-control"
                             id="applicativo"
                             [style]="filtryStyle"
                             formControlName="applicativo"
                           >
-                            <option value="">
-                              Applicativo
-                            </option>
+                            <option value="">Applicativo</option>
                             <option
                               *ngFor="let app of applicativo"
                               [value]="app.applicativoId"
@@ -81,16 +76,13 @@
                       </div>
                       <div class="col-12 col-md-6 col-lg-3">
                         <div class="form-group">
-                          <label for="opzione"></label>
                           <select
                             class="form-control"
                             id="statoRichiestaConsap"
                             [style]="filtryStyle"
                             formControlName="statoRichiestaConsap"
                           >
-                            <option value="" >
-                              Stato Richiesta Consap
-                            </option>
+                            <option value="">Stato Richiesta Consap</option>
                             <option
                               *ngFor="let st of statoRichiestaConsap"
                               [value]="st.statoRichiestaConsapId"
@@ -102,16 +94,13 @@
                       </div>
                       <div class="col-12 col-md-6 col-lg-3">
                         <div class="form-group">
-                          <label for="opzione"></label>
                           <select
                             class="form-control"
                             id="statoRichiestaOs"
                             [style]="filtryStyle"
                             formControlName="statoRichiestaOs"
                           >
-                            <option value="" >
-                              Stato Richiesta Os
-                            </option>
+                            <option value="">Stato Richiesta Os</option>
                             <option
                               *ngFor="let st of statoRichiestaOs"
                               [value]="st.statoRichiestaOsId"
@@ -123,16 +112,13 @@
                       </div>
                       <div class="col-12 col-md-6 col-lg-3">
                         <div class="form-group">
-                          <label for="opzione"></label>
                           <select
                             class="form-control"
                             id="statoApprovazioneConsap"
                             [style]="filtryStyle"
                             formControlName="statoApprovazioneConsap"
                           >
-                            <option value="" >
-                              Stato Approvazione Consap
-                            </option>
+                            <option value="">Stato Approvazione Consap</option>
                             <option
                               *ngFor="let app of statoApprovazioneConsap"
                               [value]="app.statoApprovazioneConsapId"
@@ -144,16 +130,13 @@
                       </div>
                       <div class="col-12 col-md-6 col-lg-3">
                         <div class="form-group">
-                          <label for="opzione"></label>
                           <select
                             class="form-control"
                             id="statoApprovazioneOs"
                             [style]="filtryStyle"
                             formControlName="statoApprovazioneOs"
                           >
-                            <option value="" >
-                              Stato Approvazione Os
-                            </option>
+                            <option value="">Stato Approvazione Os</option>
                             <option
                               *ngFor="let app of statoApprovazioneOs"
                               [value]="app.statoApprovazioneOsId"
@@ -183,3 +166,9 @@
     </div>
   </form>
 </div>
+<app-paginator
+  [richiesteTotali]="richiesteTotali"
+  (elementsPerPageChange)="onElementsPerPageChange($event)"
+  (nextPageEvent)="handleNextPage()"
+  (previousPageEvent)="handlePreviousPage()"
+></app-paginator>

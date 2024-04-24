@@ -18,4 +18,5 @@ export interface Richiesta {
   dataStimaFinale: Date;
   importo: number;
   commessaOs: CommessaOS;
+  dataInserimento: Date
 }

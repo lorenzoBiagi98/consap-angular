@@ -1,17 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { InserimentoComponent } from './inserimento.component';
 
-describe('TabellaRichiesteComponent', () => {
-  let component: InserimentoComponent;
-  let fixture: ComponentFixture<InserimentoComponent>;
+import { PaginatorComponent } from './paginator.component';
+
+describe('PaginatorComponent', () => {
+  let component: PaginatorComponent;
+  let fixture: ComponentFixture<PaginatorComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [InserimentoComponent]
+      declarations: [PaginatorComponent]
     })
     .compileComponents();
     
-    fixture = TestBed.createComponent(InserimentoComponent);
+    fixture = TestBed.createComponent(PaginatorComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

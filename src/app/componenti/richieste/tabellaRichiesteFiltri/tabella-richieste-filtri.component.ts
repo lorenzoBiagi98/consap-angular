@@ -19,6 +19,13 @@ export class TabellaRichiesteFiltriComponent implements OnInit{
   goToVisualizza(richiesta: Richiesta) {
     this.router.navigate(['visualizza'], { state: { richiesta } });
   }
+
+  // goToModifica(richiesta:Richiesta){
+  //     this.router.navigate(['modifica'], {state: {richiesta}})
+  // }
+  goToModifica(rich: Richiesta) {
+  this.router.navigate(['/modifica'], { queryParams: { richiestaId: rich.id } });
+}
   
 
 }

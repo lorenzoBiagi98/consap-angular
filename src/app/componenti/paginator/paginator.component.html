@@ -1,0 +1,34 @@
+<nav class="pagination-wrapper mt-2" aria-label="Esempio di navigazione con page changer">
+  <ul class="pagination">
+    <li class="page-item">
+      <a class="page-link" href="#">
+        <svg class="icon icon-primary" (click)="previousPage($event)"><use href="#it-chevron-left"></use></svg>
+        <span class="visually-hidden">Pagina precedente</span>
+      </a>
+    </li>
+    <li class="page-item"><a class="page-link" href="#">PAGINE DISPONIBILI: {{this.totalPages}}</a></li>
+    <li class="page-item"><span class="page-link">RICHIESTE PER PAGINA: {{selElementsPerPage}}</span></li>
+    <li class="page-item">
+      <a class="page-link" href="#">
+        <span class="visually-hidden">Pagina successiva</span>
+        <svg class="icon icon-primary" (click)="nextPage($event)"><use href="#it-chevron-right"></use></svg>
+      </a>
+    </li>
+  </ul>
+  <button class="btn btn-dropdown mb-3">
+  <div class="btn-example">
+    <select
+      id="dropdownElement"
+      (change)="onElementsPerPageChange($event)"
+    >
+      <option value="">
+      </option>
+      <option *ngFor="let num of elementsPerPage"
+      [value]="num"
+      >
+      {{num}}
+      </option>
+    </select>
+  </div>
+</button>
+</nav>

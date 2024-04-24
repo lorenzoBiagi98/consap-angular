@@ -11,11 +11,27 @@ import { Richiesta } from '../../../dto/Richiesta';
 @Component({
   selector: 'app-filtri',
   templateUrl: './filtri.component.html',
-  styleUrl: './filtri.component.css',
 })
 export class FiltriComponent implements OnInit {
   @Output() richiesteFiltrateChange: EventEmitter<Richiesta[]> = new EventEmitter<Richiesta[]>();
 
+  selectedElementsPerPage: number = 5;
+
+  onElementsPerPageChange(value: number) {
+    this.selectedElementsPerPage = value;
+  }
+
+  handleNextPage() {
+    this.currentPage++;
+    this.onSubmit();
+  }
+
+  handlePreviousPage() {
+    if (this.currentPage > 1) {
+      this.currentPage--;
+      this.onSubmit();
+    }
+  }
 
   selectedOption: string | null = null;
   form: FormGroup = null;
@@ -26,6 +42,8 @@ export class FiltriComponent implements OnInit {
   statoApprovazioneConsap: StatoApprovazioneCONSAP[] = [];
   statoApprovazioneOs: StatoApprovazioneOS[] = [];
   richiesta: Richiesta[] = [];
+  currentPage: number = 1; 
+  richiesteTotali : number = 0;
   
   constructor(private instance: ChiamateService) {
     this.form = new FormGroup({
@@ -41,6 +59,7 @@ export class FiltriComponent implements OnInit {
       statoApprovazioneOs: new FormControl(''),
     });
   }
+
 
   ngOnInit(): void {
     this.getApplicativi();
@@ -62,7 +81,7 @@ export class FiltriComponent implements OnInit {
   }
   onSubmit(){
 
-    const filtro= [{
+    const filtro= {
       id:null,
       numeroTicket:this.form.value.numeroTicket || null,
       applicativo: this.form.value.applicativo || null,
@@ -75,24 +94,22 @@ export class FiltriComponent implements OnInit {
       dataStimaFinale:null,
       importo:null,
       commessaOs:null
-    }]
+    }
 
     this.instance.setFiltri(filtro);
-    console.log('sono qui, filtri component')
-    this.instance.RichiestaGet(filtro).subscribe(
+
+    this.instance.RichiestaGet(filtro,this.currentPage,this.selectedElementsPerPage).subscribe(
       (response: any) => {
         console.log('Risposta dal backend:', response);
         this.richiesta = response.body.elenco.content;
         this.richiesteFiltrateChange.emit(this.richiesta);
+        this.richiesteTotali = response.body.elenco.totalElements;
         },
         (error: any) => {
           console.error('Errore nella chiama POST:', error);
         }
       );
   }
-
-
-
   /*
    *###################################################################################################
    LETTURA APPLICATIVI

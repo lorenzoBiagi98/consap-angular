@@ -1,16 +1,12 @@
 import { Component } from '@angular/core';
-import * as CryptoJS from 'crypto-js';
 import {
   FormControl,
   FormGroup,
-  ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
 import { ChiamateService } from '../../connessioni/chiamate.service';
-import { response } from 'express';
 import { Router } from '@angular/router';
 import { AuthService } from '../../auth/auth.service';
-import { SourceTextModule } from 'vm';
 import { TokenService } from '../../token/token.service';
 
 @Component({
@@ -55,10 +51,7 @@ export class LoginComponent {
           const token = response.headers.get('access_token');
           this.token.setToken(token);
           const encryptedToken = this.token.encryptToken(this.token.getToken());
-          //const secret_Key = this.token.generateSecretKey(32);
           sessionStorage.setItem('encrypted_Token',encryptedToken);
-          //sessionStorage.setItem('secret_Key', secret_Key);
-          //this.auth.isLoggedIn = true;
           this.router.navigate(['/home']);
         }
       },

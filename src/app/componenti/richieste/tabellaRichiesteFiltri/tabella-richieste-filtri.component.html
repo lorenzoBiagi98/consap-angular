@@ -3,6 +3,7 @@
   style="border-radius: 10px; box-shadow: 0 20px 20px rgba(0, 0, 0, 0.1);"
 >
   <table class="table table-striped" style="opacity: 0.9;">
+    <caption>Tabella che mostra le richieste filtrate</caption>
     <thead>
       <tr class="table-dark">
         <th scope="col">Numero Ticket</th>
@@ -26,7 +27,7 @@
             <svg class="icon icon-primary" style="margin-right: 1rem;" routerLink="visualizza" (click)="goToVisualizza(rich)">
               <use href="#it-zoom-in"></use>
             </svg>
-            <svg class="icon icon-primary">
+            <svg class="icon icon-primary" (click)="goToModifica(rich)">
               <use href="#it-pencil"></use>
             </svg>
         </td>

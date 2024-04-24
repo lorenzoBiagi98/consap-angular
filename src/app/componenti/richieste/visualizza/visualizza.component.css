@@ -5,3 +5,6 @@
     color: white; /* Colore del testo desiderato */
     /* Aggiungi altri stili se necessario */
 }
+svg{
+    color: red;
+}

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, HostListener } from '@angular/core';
 import { ChiamateService } from '../../connessioni/chiamate.service';
 import { AuthService } from '../../auth/auth.service';
 import { TokenService } from '../../token/token.service';
@@ -22,4 +22,9 @@ export class NavbarComponent {
   checkAuthentication():boolean{
     return this.auth.isAuthenticated();
   }
+  @HostListener('keydown.Tab', ['$event'])
+  handleTab(event: KeyboardEvent) {
+    event.preventDefault();
+  }
+             
 }

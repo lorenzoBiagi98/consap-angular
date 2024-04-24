@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit} from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Applicativo } from '../../../../dto/Applicativo';
 import { StatoRichiestaCONSAP } from '../../../../dto/StatoRichiestaCONSAP';
@@ -8,6 +8,7 @@ import { StatoApprovazioneOS } from '../../../../dto/StatoApprovazioneOS';
 import { FetchService } from '../../../connessioni/fetch.service';
 import { ChiamateService } from '../../../connessioni/chiamate.service';
 import { CommessaOS } from '../../../../dto/CommessaOS';
+import { forkJoin } from 'rxjs';
 
 @Component({
   selector: 'app-inserimento',
@@ -31,65 +32,24 @@ export class InserimentoComponent implements OnInit {
   constructor(private fetch: FetchService, private instance: ChiamateService) {}
 
   ngOnInit(): void {
-    /*
-   *###################################################################################################
-   FETCH APPLICATIVI
-   *###################################################################################################
-   */
-    this.fetch.getApplicativi().subscribe((data: Applicativo[]) => {
-      this.applicativo = data;
-    });
-    /*
-   *###################################################################################################
-   FETCH STATI RICHIESTA CONSAP
-   *###################################################################################################
-   */
-    this.fetch
-      .getStatiRichiestaConsap()
-      .subscribe((data: StatoRichiestaCONSAP[]) => {
-        this.statoRichiestaConsap = data;
-      });
-    /*
-   *###################################################################################################
-   FETCH STATI RICHIESTA OS
-   *###################################################################################################
-   */
-    this.fetch.getStatiRichiestaOs().subscribe((data: StatoRichiestaOS[]) => {
-      this.statoRichiestaOs = data;
-    });
-    /*
-   *###################################################################################################
-   FETCH STATI APPROVAZIONE CONSAP
-   *###################################################################################################
-   */
-    this.fetch
-      .getStatiApprovazioneConsap()
-      .subscribe((data: StatoApprovazioneCONSAP[]) => {
-        this.statoApprovazioneConsap = data;
-      });
-    /*
-   *###################################################################################################
-   FETCH STATI APPROVAZIONE OS
-   *###################################################################################################
-   */
-    this.fetch
-      .getStatiApprovazioneOs()
-      .subscribe((data: StatoApprovazioneOS[]) => {
-        this.statoApprovazioneOs = data;
-      });
-          /*
-   *###################################################################################################
-   FETCH COMMESSE OS
-   *###################################################################################################
-   */
-   this.fetch
-   .getCommesseOs()
-   .subscribe((data: CommessaOS[]) => {
-     this.commessaOs = data;
-   });
-
-      
-
+  forkJoin([
+    this.fetch.getApplicativi(),
+    this.fetch.getStatiRichiestaConsap(),
+    this.fetch.getStatiRichiestaOs(),
+    this.fetch.getStatiApprovazioneConsap(),
+    this.fetch.getStatiApprovazioneOs(),
+    this.fetch.getCommesseOs()
+  ]).subscribe(
+    ([applicativi, statiRichiestaConsap, statiRichiestaOs, statiApprovazioneConsap, statiApprovazioneOs, commesseOs]) => {
+      this.applicativo = applicativi;
+      this.statoRichiestaConsap = statiRichiestaConsap;
+      this.statoRichiestaOs = statiRichiestaOs;
+      this.statoApprovazioneConsap = statiApprovazioneConsap;
+      this.statoApprovazioneOs = statiApprovazioneOs;
+      this.commessaOs = commesseOs;
+    }
+  );
+    
     this.form = new FormGroup({
       numeroTicket: new FormControl('', [
         Validators.maxLength(5),
@@ -111,63 +71,40 @@ export class InserimentoComponent implements OnInit {
   }
 
   onSubmit() {
-    
-    // const filtro = {
-    //   "erroreDTO": null,
-    //   "filtri": null,
-    //   "elenco":[{
-    //   id: null,
-    //   numeroTicket: this.form.value.numeroTicket || null,
-    //   applicativo: this.form.value.applicativo || null,
-    //   oggetto: this.form.value.oggetto || null,
-    //   statoRichietaConsap: this.form.value.statoRichiestaConsap || null,
-    //   dataCreazione: this.form.value.statoRichiestaOs || null,
-    //   statoApprovazioneConsap:
-    //     this.form.value.statoApprovazioneConsap || null,
-    //   statoApprovazioneOs: this.form.value.statoApprovazioneOs || null,
-    //   statoRichiestaOs: this.form.value.statoRichiestaOs || null,
-    //   dataStimaFinale: this.form.value.dataStimaFinale || null,
-    //   importo: this.form.value.importo || null,
-    //   commessaOs: this.form.value.commessaOs || null,
-    // }]};
-
     const filtro = {
       erroreDTO: null,
       filtri: null,
       elenco: [
         {
           id: null,
-          numeroTicket: this.form.value.numeroTicket || null,
+          numeroTicket: parseInt(this.form.value.numeroTicket) || null,
           applicativo: {
-            applicativoId: this.form.value.applicativo || null,
+            applicativoId: parseInt(this.form.value.applicativo) || null,
           },
           oggetto: this.form.value.oggetto || null,
           statoRichiestaConsap: {
-            statoRichiestaConsapId: this.form.value.statoRichiestaConsap || null,
+            statoRichiestaConsapId: parseInt(this.form.value.statoRichiestaConsap) || null,
           },
-          dataCreazione: this.form.value.statoRichiestaOs || null,
+          dataCreazione: this.form.value.dataCreazione || null,
           statoApprovazioneConsap: {
-            statoApprovazioneConsapId: this.form.value.statoApprovazioneConsap || null,
+            statoApprovazioneConsapId: parseInt(this.form.value.statoApprovazioneConsap) || null,
           },
           statoApprovazioneOs: {
-            statoApprovazioneOsId: this.form.value.statoApprovazioneOs || null,
+            statoApprovazioneOsId: parseInt(this.form.value.statoApprovazioneOs) || null,
           },
           statoRichiestaOs: {
-            statoRichiestaOsId: this.form.value.statoRichiestaOs || null,
+            statoRichiestaOsId: parseInt(this.form.value.statoRichiestaOs) || null,
           },
           dataStimaFinale:this.form.value.dataStimaFinale || null,
           importo: this.form.value.importo || null,
           commessaOs: {
-            commessaOsId: this.form.value.commessaOs || null,
+            commessaOsId: parseInt(this.form.value.commessaOs) || null,
           }
         }
       ]
     };
 
     this.instance.setFiltriInserimento(filtro);
-
-    //this.instance.setFiltriInserimento(filtro);
-    console.log('filtro in inserimento',filtro)
 
     this.instance.RichiestaInserimento(filtro).subscribe(
       (response: any) => {
@@ -177,5 +114,9 @@ export class InserimentoComponent implements OnInit {
           console.error('Errore nella chiama POST:', error);
         }
       );
+  }
+
+  goBack():void{
+    history.back
   }
 }

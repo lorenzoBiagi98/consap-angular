@@ -1,4 +1,4 @@
-import { OnInit } from '@angular/core';
+import { HostListener, OnInit } from '@angular/core';
 import { Component } from '@angular/core';
 
 @Component({
@@ -13,5 +13,10 @@ export class FooterComponent implements OnInit {
    this.imageUrl = "/Users/lorenzobiagi/Documents/Utilità/CorsoOpenSystem/ripassoAngular/progettoAngular/src/app/immagini/consap_logo_news.jpeg"
   }
 
+  @HostListener('keydown.Tab', ['$event'])
+  handleTab(event: KeyboardEvent) {
+    event.preventDefault();
+    event.stopPropagation();
+  }
 
 }

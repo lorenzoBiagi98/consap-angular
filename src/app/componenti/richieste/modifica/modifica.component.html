@@ -1,14 +1,17 @@
-<div class="container bg-primary mt-5 mb-5">
-  <div class="mt-4">
+ <div class="container bg-primary mt-5 mb-5">
+  <app-modal *ngIf="isModalOpen" #modalComponent class="modal-overlay"></app-modal>
+  <div class="mt-4" *ngIf="form">
     <form [formGroup]="form" style="max-width: 95%" class="mx-auto">
       <div class="row">
         <div class="form-group col-md-4 mt-5">
+          <p>Numero Ticket</p>
           <input
             type="text"
             class="form-control"
             id="numeroTicket"
-            placeholder="Numero Ticket"
+            placeholder="{{richiesta?.numeroTicket}}"
             formControlName="numeroTicket"
+            readonly
           />
           <div
             class="text-danger"
@@ -32,153 +35,133 @@
           </div>
         </div>
         <div class="form-group col-md-4 mt-5">
+          <p>Oggetto</p>
           <input
             type="text"
             class="form-control"
             id="Oggetto"
-            placeholder="Oggetto"
             formControlName="oggetto"
+            readonly
           />
           <div
             class="text-danger"
             *ngIf="
-              form.controls['numeroTicket'].touched ||
-              form.controls['numeroTicket'].dirty
+              form.controls['oggetto'].touched ||
+              form.controls['oggetto'].dirty
             "
           >
-            <span *ngIf="form.controls['numeroTicket'].errors?.['required']"
+            <span *ngIf="form.controls['oggetto'].errors?.['required']"
               >Oggetto obbligatorio</span
             >
           </div>
         </div>
         <div class="form-group col-md-4 mt-5">
+          <p>Commessa OS</p>
           <select
             class="form-control"
             id="commessaOs"
             formControlName="commessaOs"
           >
-            <option value="">CommessaOs</option>
-            <option *ngFor="let comm of commessaOs" [value]="comm?.commessaOsId">
-              {{ comm?.descCommessaOs}}
+            <option [ngValue]="richiesta?.commessaOs?.commessaOsId">{{richiesta?.commessaOs?.descCommessaOs}}</option>
+            <option [ngValue]="getNextValue(commessaOs, richiesta?.commessaOs?.commessaOsId)?.commessaOsId">
+              {{ getNextValue(commessaOs, richiesta?.commessaOs?.commessaOsId)?.descCommessaOs}}
             </option>
           </select>
         </div>
       </div>
       <div class="row">
         <div class="form-group col-md-3">
-          <select
+          <p>Applicativo</p>
+          <input
+            type="text"
             class="form-control"
             id="applicativo"
             formControlName="applicativo"
-          >
-            <option value="">Applicativo</option>
-            <option *ngFor="let app of applicativo" [value]="app?.applicativoId">
-              {{ app?.descApplicativo }}
-            </option>
-          </select>
-          <div
-            class="text-danger"
-            *ngIf="
-              form.controls['numeroTicket'].touched ||
-              form.controls['numeroTicket'].dirty
-            "
-          >
-            <span *ngIf="form.controls['numeroTicket'].errors?.['required']"
-              >Applicativo obbligatorio</span
-            >
-          </div>
-        </div>
-        <div class="form-group col-md-3">
-          <select
-            class="form-control"
-            id="statoRichiestaConsap"
-            formControlName="statoRichiestaConsap"
-          >
-            <option value="">Stato Richiesta Consap</option>
-            <option
-              *ngFor="let rich of statoRichiestaConsap"
-              [value]="rich?.statoRichiestaConsapId"
-            >
-              {{ rich?.descStatoRichiestaConsap }}
-            </option>
-          </select>
-        </div>
-        <div class="form-group col-md-3">
-          <select
-            class="form-control"
-            id="statoRichiestaOs"
-            formControlName="statoRichiestaOs"
-          >
-            <option value="">Stato Richiesta Os</option>
-            <option
-              *ngFor="let rich of statoRichiestaOs"
-              [value]="rich?.statoRichiestaOsId"
-            >
-              {{ rich?.descStatoRichiestaOs }}
-            </option>
-          </select>
-        </div>
-        <div class="form-group col-md-3">
-          <select
-            class="form-control col-md-3"
-            id="statoApprovazioneConsap"
-            formControlName="statoApprovazioneConsap"
-          >
-            <option value="">Stato Approvazione Consap</option>
-            <option
-              *ngFor="let app of statoApprovazioneConsap"
-              [value]="app?.statoApprovazioneConsapId"
-            >
-              {{ app?.descStatoApprovazioneConsap }}
-            </option>
-          </select>
-        </div>
-        <div class="form-group col-md-3">
-          <select
-            class="form-control"
-            id="statoApprovazioneOs"
-            formControlName="statoApprovazioneOs"
-          >
-            <option value="">Stato Approvazione Os</option>
-            <option
-              *ngFor="let app of statoApprovazioneOs"
-              [value]="app?.statoApprovazioneOsId"
-            >
-              {{ app?.descStatoApprovazioneOs }}
-            </option>
-          </select>
-        </div>
-        <div class="form-group col-md-3">
-          <input
-            type="date"
-            class="form-control"
-            id="dataCreazione"
-            placeholder="Data creazione"
-            formControlName="dataCreazione"
+            readonly
           />
           <div
             class="text-danger"
             *ngIf="
-              form.controls['numeroTicket'].touched ||
-              form.controls['numeroTicket'].dirty
+              form.controls['applicativo'].touched ||
+              form.controls['applicativo'].dirty
             "
           >
-            <span *ngIf="form.controls['numeroTicket'].errors?.['required']"
+            <span *ngIf="form.controls['oggetto'].errors?.['required']"
+              >Oggetto obbligatorio</span
+            >
+          </div>
+        </div>
+        <div class="form-group col-md-3">
+          <p>Stato richiesta CONSAP</p>
+          <select class="form-control" id="statoRichiestaConsap" formControlName="statoRichiestaConsap">
+            <option *ngFor="let rich of statoRichiestaConsap; let i = index" [ngValue]="rich.statoRichiestaConsapId"
+              [hidden]="i !== currentIndex">
+              {{ rich.descStatoRichiestaConsap }}
+            </option>
+          </select>
+        </div>
+        <div class="form-group col-md-3">
+          <p>Stato richiesta OS</p>
+          <select class="form-control" id="statoRichiestaOs" formControlName="statoRichiestaOs">
+            <option *ngFor="let rich of statoRichiestaOs; let i = index" [ngValue]="rich.statoRichiestaOsId"
+              [hidden]="i !== currentIndex">
+              {{ rich.descStatoRichiestaOs }}
+            </option>
+          </select>
+        </div>
+        <div class="form-group col-md-3">
+          <p>Stato appr. CONSAP</p>
+          <select class="form-control" id="statoApprovazioneConsap" formControlName="statoApprovazioneConsap">
+            <option *ngFor="let app of statoApprovazioneConsap; let i = index" [ngValue]="app.statoApprovazioneConsapId"
+              [hidden]="i !== currentIndex">
+              {{ app.descStatoApprovazioneConsap }}
+            </option>
+          </select>
+        </div>
+        <div class="form-group col-md-3">
+          <p>Stato approvazione OS</p>
+          <select class="form-control" id="statoApprovazioneOs" formControlName="statoApprovazioneOs">
+            <option *ngFor="let app of statoApprovazioneOs; let i = index" [ngValue]="app.statoApprovazioneOsId"
+              [hidden]="i !== currentIndex">
+              {{ app.descStatoApprovazioneOs }}
+            </option>
+          </select>
+        </div>
+        <div class="form-group col-md-3">
+          <p>Data di crazione</p>
+          <input
+            type="date"
+            class="form-control"
+            id="dataCreazione"
+            placeholder="richiesta?.dataCreazione"
+            formControlName="dataCreazione"
+            readonly
+          />
+          <div
+            class="text-danger"
+            *ngIf="
+              form.controls['dataCreazione'].touched ||
+              form.controls['dataCreazione'].dirty
+            "
+          >
+            <span *ngIf="form.controls['dataCreazione'].errors?.['required']"
               >Data di creazione obbligatoria</span
             >
           </div>
         </div>
         <div class="form-group col-md-3">
+          <p>Stima data fine</p>
           <input
             type="date"
             class="form-control"
             id="stimaDataFine"
-            placeholder="Stima data fine"
+            placeholder="richiesta.dataStimaFinale"
             [min]="form.value.dataCreazione"
             formControlName="dataStimaFinale"
           />
         </div>
         <div class="form-group col-md-3">
+          <p>Importo</p>
           <input
             type="text"
             class="form-control"
@@ -196,7 +179,7 @@
           [disabled]="!form.valid"
           (click) = "onSubmit()"
         >
-          Inserisci
+          Modifica
         </button>
       </div>
       <div class="btn-example col-2">
