@@ -13,12 +13,46 @@ import { Richiesta } from '../../../dto/Richiesta';
   templateUrl: './filtri.component.html',
 })
 export class FiltriComponent implements OnInit {
-  @Output() richiesteFiltrateChange: EventEmitter<Richiesta[]> = new EventEmitter<Richiesta[]>();
-
+    /*
+   *###################################################################################################
+   OUTPUT
+   *###################################################################################################
+   */
+  @Output() richiesteFiltrateChange: EventEmitter<Richiesta[]> =
+    new EventEmitter<Richiesta[]>();
+  @Output() filtriChange: EventEmitter<any> = new EventEmitter<any>();
+    /*
+   *###################################################################################################
+   VARIABILI
+   *###################################################################################################
+   */
+  selectedOption: string | null = null;
+  form: FormGroup = null;
+  ricercaEffettuata: boolean = false;
   selectedElementsPerPage: number = 5;
+  elementsPerPage: number[] = [1, 5, 10];
+  elPerPage: number = 5;
+  /*
+   *###################################################################################################
+   ARRAY DI OGGETTI
+   *###################################################################################################
+   */
+  applicativo: Applicativo[] = [];
+  statoRichiestaConsap: StatoRichiestaCONSAP[] = [];
+  statoRichiestaOs: StatoRichiestaOS[] = [];
+  statoApprovazioneConsap: StatoApprovazioneCONSAP[] = [];
+  statoApprovazioneOs: StatoApprovazioneOS[] = [];
+  richiesta: Richiesta[] = [];
+  currentPage: number = 1;
+  richiesteTotali: number = 0;
+    /*
+   *###################################################################################################
+   GESTIONE DELLA PAGINAZIONE
+   *###################################################################################################
+   */
 
-  onElementsPerPageChange(value: number) {
-    this.selectedElementsPerPage = value;
+  onElementsPerPageChange(event: any): void {
+    this.elPerPage = event.target.value;
   }
 
   handleNextPage() {
@@ -32,19 +66,15 @@ export class FiltriComponent implements OnInit {
       this.onSubmit();
     }
   }
-
-  selectedOption: string | null = null;
-  form: FormGroup = null;
-
-  applicativo: Applicativo[] = [];
-  statoRichiestaConsap: StatoRichiestaCONSAP[] = [];
-  statoRichiestaOs: StatoRichiestaOS[] = [];
-  statoApprovazioneConsap: StatoApprovazioneCONSAP[] = [];
-  statoApprovazioneOs: StatoApprovazioneOS[] = [];
-  richiesta: Richiesta[] = [];
-  currentPage: number = 1; 
-  richiesteTotali : number = 0;
-  
+    onOptionSelected(event: any) {
+    const selectedValue = event.target.value;
+    this.selectedOption = selectedValue !== undefined ? selectedValue : null;
+  }
+    /*
+   *###################################################################################################
+  INIZIALIZZAZIONE FORM
+   *###################################################################################################
+   */
   constructor(private instance: ChiamateService) {
     this.form = new FormGroup({
       numeroTicket: new FormControl('', [
@@ -59,8 +89,11 @@ export class FiltriComponent implements OnInit {
       statoApprovazioneOs: new FormControl(''),
     });
   }
-
-
+  /*
+   *###################################################################################################
+  FETCHING DATI
+   *###################################################################################################
+   */
   ngOnInit(): void {
     this.getApplicativi();
     this.getStatiRichiestaConsap();
@@ -68,42 +101,47 @@ export class FiltriComponent implements OnInit {
     this.getStatiApprovazioneConsap();
     this.getStatiApprovazioneOs();
   }
-
-
+    /*
+   *###################################################################################################
+  STILE PERSONALIZZATO
+   *###################################################################################################
+   */
   filtryStyle: any = {
     'border-radius': '30px',
     'box-shadow': '0 30px 30px rgba(0, 0, 0, 0.1)',
   };
-
-  onOptionSelected(event: any) {
-    const selectedValue = event.target.value;
-    this.selectedOption = selectedValue !== undefined ? selectedValue : null;
-  }
-  onSubmit(){
-
-    const filtro= {
-      id:null,
-      numeroTicket:this.form.value.numeroTicket || null,
+  /*
+   *###################################################################################################
+  VALORIZZAZIONE FORM, FETCHING RICHIESTE FILTRATE
+   *###################################################################################################
+   */
+  onSubmit() {
+    const filtro = {
+      id: null,
+      numeroTicket: this.form.value.numeroTicket || null,
       applicativo: this.form.value.applicativo || null,
       oggetto: this.form.value.oggetto || null,
-      statoRichietaConsap: this.form.value.statoRichiestaConsap || null,
-      dataCreazione:null,
+      statoRichiestaConsap: this.form.value.statoRichiestaConsap || null,
+      dataCreazione: null,
       statoApprovazioneConsap: this.form.value.statoApprovazioneConsap || null,
       statoApprovazioneOs: this.form.value.statoApprovazioneOs || null,
       statoRichiestaOs: this.form.value.statoRichiestaOs || null,
-      dataStimaFinale:null,
-      importo:null,
-      commessaOs:null
-    }
+      dataStimaFinale: null,
+      importo: null,
+      commessaOs: null,
+    };
 
     this.instance.setFiltri(filtro);
 
-    this.instance.RichiestaGet(filtro,this.currentPage,this.selectedElementsPerPage).subscribe(
-      (response: any) => {
-        console.log('Risposta dal backend:', response);
-        this.richiesta = response.body.elenco.content;
-        this.richiesteFiltrateChange.emit(this.richiesta);
-        this.richiesteTotali = response.body.elenco.totalElements;
+    this.instance
+      .RichiestaGet(filtro, this.currentPage, this.elPerPage)
+      .subscribe(
+        (response: any) => {
+          console.log('Risposta dal backend:', response);
+          this.richiesta = response.body.elenco.content;
+          this.filtriChange.emit(filtro);
+          this.richiesteFiltrateChange.emit(this.richiesta);
+          this.richiesteTotali = response.body.elenco.totalElements;
         },
         (error: any) => {
           console.error('Errore nella chiama POST:', error);

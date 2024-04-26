@@ -48,7 +48,7 @@
                         <div class="form-group">
                           <input
                             type="text"
-                            class="form-control"
+                            class="form-control filtriStyle"
                             id="oggetto"
                             placeholder="Oggetto"
                             [style]="filtryStyle"
@@ -65,7 +65,7 @@
                             formControlName="applicativo"
                           >
                             <option value="">Applicativo</option>
-                            <option
+                            <option class=""
                               *ngFor="let app of applicativo"
                               [value]="app.applicativoId"
                             >
@@ -146,15 +146,32 @@
                           </select>
                         </div>
                       </div>
-                      <div class="col-12 col-md-6 col-lg-3">
+                      <div class="col-12 col-md-6 col-lg-3 ">
                         <button class="rounded-circle" [disabled]="!form.valid">
                           <a class="rounded-icon" aria-label="Cerca nel sito">
-                            <svg class="icon" (click)="onSubmit()">
+                            <svg class="icon" (click)="onSubmit();">
                               <use href="#it-search"></use>
                             </svg>
                           </a>
                         </button>
+                        <button class="btn btn-dropdown" style="margin-left: 10px;">
+                          <div class="btn-example">
+                            <select
+                              id="dropdownElement"
+                              (change)="onElementsPerPageChange($event)"
+                            >
+                              <option value="">
+                              </option>
+                              <option *ngFor="let num of elementsPerPage"
+                              [value]="num"
+                              >
+                              {{num}}
+                              </option>
+                            </select>
+                          </div>
+                        </button>
                       </div>
+
                     </div>
                   </div>
                 </div>
@@ -166,9 +183,3 @@
     </div>
   </form>
 </div>
-<app-paginator
-  [richiesteTotali]="richiesteTotali"
-  (elementsPerPageChange)="onElementsPerPageChange($event)"
-  (nextPageEvent)="handleNextPage()"
-  (previousPageEvent)="handlePreviousPage()"
-></app-paginator>

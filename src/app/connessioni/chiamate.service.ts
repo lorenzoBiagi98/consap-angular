@@ -1,7 +1,8 @@
 import { HttpClient, HttpHandler, HttpHeaders } from '@angular/common/http';
 import { Injectable, OnInit } from '@angular/core';
 import { TokenService } from '../token/token.service';
-import { catchError, throwError } from 'rxjs';
+import { Observable, catchError, throwError } from 'rxjs';
+import { tap } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root',
@@ -81,7 +82,7 @@ export class ChiamateService {
   private urlStatoApprovazioneOs = 'http://localhost:8080/statoApprovazioneOs';
   private urlCommessaOs = 'http://localhost:8080/commessaOs';
   //private urlRichiesta = 'http://localhost:8080/richiesta/1-5';
-  private urlRichiestaStorico = 'http://localhost:8080/richiesta/storico/1-5';
+ 
   private urlRichiestaInserimento = 'http://localhost:8080/richiesta/new';
   private urlRichiestaModifica = 'http://localhost:8080/richiesta/edit';
 
@@ -107,8 +108,13 @@ export class ChiamateService {
     return this.requestBodyRichiesta;
   }
 
-  loginRequest(data: any) {
-    return this.http.post<any>(this.urlLogin, data, { observe: 'response' });
+  loginRequest(data: any): Observable<any> {
+    return this.http.post<any>(this.urlLogin, data, { observe: 'response' })
+      .pipe(
+        tap(response => {
+          this.token.startTokenExpirationTimer();
+        })
+      );
   }
 
   logoutRequest() {
@@ -279,12 +285,12 @@ export class ChiamateService {
       return throwError(error); // Propaga l'errore al chiamante
     }
   }
-  /*
+    /*
    *###################################################################################################
-   LETTURA STORICO RICHIESTE
+   LETTURA RICHIESTE FILTRATE
    *###################################################################################################
    */
-  RichiestaStoricoGet(filtro: any) {
+   RichiesteFiltrateGet(filtro: any, pageNumber:number, pageSize:number, campo:string, ordine:string) {
     let token = '';
     if (typeof sessionStorage !== 'undefined') {
       const encryptedToken = sessionStorage.getItem('encrypted_Token');
@@ -294,8 +300,73 @@ export class ChiamateService {
       Authorization: `Bearer ${token}`,
       'Content-Type': 'application/json',
     });
+    const urlRichiesta = `http://localhost:8080/richiesta/${pageNumber}-${pageSize}?campo=${campo}&ordinamento=${ordine}`;
+    console.log('filtro finale:', filtro)
+    try {
+      return this.http
+        .post<any>(
+          urlRichiesta,
+          { filtri: filtro },
+          {
+            headers,
+            observe: 'response',
+          }
+        )
+        .pipe(
+          catchError((error) => {
+            // Gestisci l'errore qui
+            console.error('Si è verificato un errore:', error);
+            return throwError(error); // Propaga l'errore al chiamante
+          })
+        );
+    } catch (error) {
+      console.error('Si è verificato un errore durante la richiesta:', error);
+      return throwError(error); // Propaga l'errore al chiamante
+    }
+  }
+  /*
+   *###################################################################################################
+   LETTURA STORICO RICHIESTE FILTRATE
+   *###################################################################################################
+   */
+  RichiestaStoricoGet(filtro: any, pageNumber:number, pageSize:number, campo:string, ordine:string) {
+    let token = '';
+    if (typeof sessionStorage !== 'undefined') {
+      const encryptedToken = sessionStorage.getItem('encrypted_Token');
+      token = this.token.decryptToken(encryptedToken);
+    }
+    const urlRichiestaStorico = `http://localhost:8080/richiesta/storico/${pageNumber}-${pageSize}?campo=${campo}&ordinamento=${ordine}`;
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/json',
+    });
     return this.http.post<any>(
-      this.urlRichiestaStorico,
+      urlRichiestaStorico,
+      { filtri: filtro },
+      {
+        headers,
+        observe: 'response',
+      }
+    );
+  }
+  /*
+   *###################################################################################################
+   LETTURA STORICO RICHIESTE NON FILTRATE
+   *###################################################################################################
+   */
+  RichiestaStoricoNoGet(filtro: any, pageNumber:number, pageSize:number) {
+    let token = '';
+    if (typeof sessionStorage !== 'undefined') {
+      const encryptedToken = sessionStorage.getItem('encrypted_Token');
+      token = this.token.decryptToken(encryptedToken);
+    }
+    const urlRichiestaStorico = `http://localhost:8080/richiesta/storico/${pageNumber}-${pageSize}`;
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/json',
+    });
+    return this.http.post<any>(
+      urlRichiestaStorico,
       { filtri: filtro },
       {
         headers,

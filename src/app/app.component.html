@@ -1,6 +1,9 @@
 <div style=" position: relative; border-radius: 10px; box-shadow: 0 20px 20px rgba(0, 0, 0, 0.1); background-image: url('https://www.repstatic.it/content/contenthub/img/2022/05/05/130019707-9ea07e6f-71d0-474f-81f6-84c2aa7a633d.jpg');" tabindex="-1">
-    <app-navbar tabindex="-1"></app-navbar>
-    <router-outlet></router-outlet>
-    <app-footer tabindex="-1"></app-footer>
+  <div *ngIf="loading">
+    <app-loading></app-loading>
+  </div>
+  <app-navbar tabindex="-1" *ngIf="!loading"></app-navbar>
+  <router-outlet *ngIf="!loading"></router-outlet>
+  <app-footer *ngIf="!loading" tabindex="-1"></app-footer>
   </div>
   

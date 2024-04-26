@@ -1,15 +1,43 @@
 <div
   class="container mt-5 mb-5"
-  style="border-radius: 10px; box-shadow: 0 20px 20px rgba(0, 0, 0, 0.1);"
+  style="border-radius: 10px; box-shadow: 0 20px 20px rgba(0, 0, 0, 0.1)"
 >
-  <table class="table table-striped" style="opacity: 0.9;">
-    <caption>Tabella che mostra le richieste filtrate</caption>
-    <thead>
+  <table class="table table-striped" style="opacity: 0.9">
+    <caption>
+      Tabella che mostra le richieste filtrate
+    </caption>
+    <thead>   
       <tr class="table-dark">
-        <th scope="col">Numero Ticket</th>
+        <th scope="col">
+          <svg
+            class="icon icon-primary"
+            (click)="
+              setCampoOrdine('numeroTicket','asc'); getRichiestaFiltrata()
+            "
+          >
+            <use href="#it-arrow-down-circle"></use>
+          </svg>
+          Numero Ticket
+          <svg
+            class="icon icon-primary"
+            (onKeyPress)="
+              setCampoOrdine('numeroTicket','desc'); getRichiestaFiltrata()
+            "
+          >
+            <use href="#it-arrow-up-circle"></use>
+          </svg>
+        </th>
         <th scope="col">Oggetto</th>
         <th scope="col">Applicativo</th>
-        <th scope="col">Data creazione</th>
+        <th scope="col">
+          <svg class="icon icon-primary" (onKeyPress)="setCampoOrdine('dataCreazione','asc');getRichiestaFiltrata()">
+            <use href="#it-arrow-down-circle"></use>
+          </svg>
+          Data creazione
+          <svg class="icon icon-primary" (onKeyPress)="setCampoOrdine('dataCreazione','desc');getRichiestaFiltrata()">
+            <use href="#it-arrow-up-circle"></use>
+          </svg>
+        </th>
         <th scope="col">Stima data fine</th>
         <th scope="col">Importo</th>
         <th scope="col">Gestisci</th>
@@ -24,14 +52,25 @@
         <td>{{ rich.dataStimaFinale }}</td>
         <td>{{ rich.importo }}</td>
         <td>
-            <svg class="icon icon-primary" style="margin-right: 1rem;" routerLink="visualizza" (click)="goToVisualizza(rich)">
-              <use href="#it-zoom-in"></use>
-            </svg>
-            <svg class="icon icon-primary" (click)="goToModifica(rich)">
-              <use href="#it-pencil"></use>
-            </svg>
+          <svg
+            class="icon icon-primary"
+            style="margin-right: 1rem"
+            routerLink="visualizza"
+            (onKeyPress)="goToVisualizza(rich)"
+          >
+            <use href="#it-zoom-in"></use>
+          </svg>
+          <svg class="icon icon-primary" (onKeyPress)="goToModifica(rich)">
+            <use href="#it-pencil"></use>
+          </svg>
         </td>
       </tr>
     </tbody>
   </table>
+  <app-paginator
+  [richiesteTotali]="richiesta.length" 
+  (elementsPerPageChange)="onElementsPerPageChange($event)"
+  (nextPageEvent)="handleNextPage()"
+  (previousPageEvent)="handlePreviousPage()"
+  ></app-paginator>
 </div>

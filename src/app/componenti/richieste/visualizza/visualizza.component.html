@@ -130,7 +130,7 @@
 
   </form>
 
-  <div
+  <!-- <div
     class="container mt-5 mb-5"
     style="border-radius: 10px; box-shadow: 0 20px 20px rgba(0, 0, 0, 0.1)"
   >
@@ -158,4 +158,112 @@
       </tbody>
     </table>
   </div>
+  <app-paginator
+  [richiesteTotali]="richiestaStorico.length" 
+  (elementsPerPageChange)="onElementsPerPageChange($event)"
+  (nextPageEvent)="handleNextPage()"
+  (previousPageEvent)="handlePreviousPage()">
+></app-paginator> -->
+<div class="mt-2">
+  <table class="table table-success">
+    <thead class="table-dark">
+      <tr>
+        <th scope="col">
+          <svg
+            class="icon icon-primary"
+            (click)="
+              setCampoOrdine('dataInserimento', 'asc');
+            getRichiestaStorico()"
+          >
+            <use href="#it-arrow-down-circle"></use>
+          </svg>
+          Data inserimento
+          <svg
+            class="icon icon-primary"
+            (click)="
+              setCampoOrdine('dataInserimento', 'desc'); 
+           getRichiestaStorico() "
+          >
+            <use href="#it-arrow-up-circle"></use>
+          </svg>
+        </th>
+        <th scope="col">Gestisci</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let rich of richiestaStorico" class="table-info">
+        <td>{{ formatData(rich?.dataInserimento) }}</td>
+        <td>
+          <svg
+          class="icon icon-primary"
+          style="margin-right: 1rem"
+          (click)="selezionaRichiesta(rich)"
+        >
+          <use href="#it-exchange-circle"></use>
+        </svg>
+        </td>
+      </tr>
+    </tbody>
+    <tfoot>
+      <tr>
+        <td
+          class="pagination-wrapper"
+          aria-label="Esempio di navigazione simple mode"
+          colspan="7"
+        >
+        <div style="display: flex; align-items: center;">
+          <ul class="pagination" aria-label="Pagina 1 di 5">
+            <li class="page-item">
+              <a
+                class="page-link"
+                (click)="handlePreviousPage()"
+                
+              >
+                <svg class="icon icon-primary">
+                  <use href="#it-chevron-left"></use>
+                </svg>
+                <span class="visually-hidden">Pagina precedente</span>
+              </a>
+            </li>
+            <li class="page-item">
+              <span class="page-link" aria-current="page">{{
+                currentPage
+              }}</span>
+            </li>
+            <li class="page-item"><span class="page-link">/</span></li>
+            <li class="page-item">
+              <span class="page-link">{{ totalPages }}</span>
+            </li>
+            <li class="page-item visually-hidden">
+              <a class="page-link" href="#" aria-current="page"
+                >Pagina 1 di 5</a
+              >
+            </li>
+            <li class="page-item">
+              <a class="page-link" (click)="handleNextPage()">
+                <span class="visually-hidden">Pagina successiva</span>
+                <svg class="icon icon-primary">
+                  <use href="#it-chevron-right"></use>
+                </svg>
+              </a>
+            </li>
+          </ul>
+          <div class="dropdown text-center mb-3 ml-2" >
+              <select
+                id="dropdownElement"
+                (change)="onElementsPerPageChange($event); getRichiestaStorico()"
+                
+              >
+                <option value=""></option>
+                <option *ngFor="let num of elementsPerPage" [value]="num">
+                  {{ num }}
+                </option>
+              </select>
+          </div>
+        </div>
+        </td>
+      </tr>
+    </tfoot>
+  </table>
+</div>
 </div>

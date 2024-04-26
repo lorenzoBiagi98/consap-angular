@@ -7,9 +7,35 @@ import * as CryptoJS from 'crypto-js';
 export class TokenService {
   private token: string | null = null;
   private secretKey: string;
+  private tokenExpirationTimer: any;
+
+  startTokenExpirationTimer(): void {
+    this.stopTokenExpirationTimer();
+    const tokenRemovalTimeout = 30 * 60 * 1000;
+
+    const alertTimeout = 10 * 1000;
+
+    setTimeout(() => {
+      alert(
+        'Il token sta per scadere fra 30 secondi. Verrai re-indirizzato alla home'
+      );
+    }, alertTimeout);
+
+    // Imposta il timer per rimuovere il token dopo un minuto
+    this.tokenExpirationTimer = setTimeout(() => {
+      sessionStorage.removeItem('encrypted_Token');
+      sessionStorage.removeItem('secret_Key');
+    }, tokenRemovalTimeout);
+  }
+
+  stopTokenExpirationTimer(): void {
+    if (this.tokenExpirationTimer) {
+      clearTimeout(this.tokenExpirationTimer);
+    }
+  }
 
   constructor() {
-    if(typeof sessionStorage !== 'undefined'){
+    if (typeof sessionStorage !== 'undefined') {
       const storedSecretKey = sessionStorage.getItem('secret_Key');
       if (storedSecretKey) {
         this.secretKey = storedSecretKey;
@@ -21,7 +47,8 @@ export class TokenService {
   }
 
   private generateSecretKey(length: number): string {
-    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    const characters =
+      'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
     let result = '';
     const charactersLength = characters.length;
     for (let i = 0; i < length; i++) {
@@ -32,16 +59,19 @@ export class TokenService {
 
   encryptToken(token: string): string {
     sessionStorage.setItem('secret_Key', this.secretKey);
-    const encryptedToken = CryptoJS.AES.encrypt(token, this.secretKey).toString();
+    const encryptedToken = CryptoJS.AES.encrypt(
+      token,
+      this.secretKey
+    ).toString();
     return encryptedToken;
   }
-  
+
   decryptToken(encryptedToken: string): string {
     const decryptedBytes = CryptoJS.AES.decrypt(encryptedToken, this.secretKey);
     const decryptedToken = decryptedBytes.toString(CryptoJS.enc.Utf8);
     return decryptedToken;
   }
-  
+
   setToken(token: string) {
     this.token = token;
   }

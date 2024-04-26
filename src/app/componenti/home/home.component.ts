@@ -11,9 +11,14 @@ import { Richiesta } from '../../../dto/Richiesta';
 export class HomeComponent implements OnInit {
   showLogin: boolean = false;
   richiesteFiltrate: Richiesta[] = [];
+  filtri:any;
 
   updateRichiesteFiltrate(richieste: Richiesta[]) {
     this.richiesteFiltrate = richieste;
+  }
+
+  updateFiltri(filtro: any) {
+    this.filtri = filtro;
   }
 
   ngOnInit(): void {

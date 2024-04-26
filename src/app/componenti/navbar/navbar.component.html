@@ -1,13 +1,15 @@
-<div class="it-header-center-wrapper" style="box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);">
+<div
+  class="it-header-center-wrapper"
+>
   <div class="container">
     <div class="row">
       <div class="col-12">
-        <div class="it-header-center-content-wrapper">
+        <div class="it-header-center-content-wrapper mt-3">
           <div class="it-brand-wrapper">
             <a routerLink="home">
-              <svg class="icon" aria-hidden="true">
-                <use href="#it-pa" routerLink="home"></use>
-              </svg>
+              <div class="circle-icon">
+              <img src="https://yt3.googleusercontent.com/ytc/AIdro_lKZLixr778Y_507jw_wBFwhUqzIgWGkX9IdQMH5QLOAw=s900-c-k-c0x00ffffff-no-rj" alt="logo">
+              </div>
               <div class="it-brand-text">
                 <div class="it-brand-title">Consap S.p.A</div>
                 <div class="it-brand-tagline d-none d-md-block">
@@ -15,27 +17,41 @@
                 </div>
               </div>
             </a>
-          </div>
+          </div>          
+          <hr>
           <div class="it-right-zone">
             <a
-             
               class="btn btn-primary btn-icon btn-full"
-              style="
-                border-radius: 30px;
-                box-shadow: 0 30px 30px rgba(0, 0, 0, 0.1);
-              "
             >
-              <span class="rounded-icon"  >
+              <span class="rounded-icon">
                 <svg class="icon icon-primary">
                   <use href="#it-user"></use>
                 </svg>
               </span>
-              <span class="d-none d-lg-block" routerLink="/login" *ngIf="!checkAuthentication()">Accedi all'area personale</span>
-              <span class="d-none d-lg-block" routerLink="/home" (click)="logout()" *ngIf="checkAuthentication()">Logout</span>
+              <span
+                class="d-none d-lg-block"
+                routerLink="/login"
+                *ngIf="!checkAuthentication()"
+                >Accedi all'area personale</span
+              >
+              <span
+                class="d-none d-lg-block"
+                routerLink="/home"
+                (click)="logout()"
+                *ngIf="checkAuthentication()"
+                >Logout</span
+              >
             </a>
           </div>
         </div>
       </div>
+      <div class="row">
+      <div class="col-6 d-flex mt-3 ">
+        <p class="underline-on-hover">Chi siamo</p>
+        <p class="underline-on-hover">Contattaci</p>
+        <p class="underline-on-hover" routerLink="inserimento">Inserisci una nuova richiesta</p>
+      </div>
+    </div>
     </div>
   </div>
 </div>
